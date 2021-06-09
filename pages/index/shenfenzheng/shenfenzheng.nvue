@@ -1,0 +1,78 @@
+<template>
+	<view class="page">
+		<view style="height: 80rpx;"></view>
+		<navigator class="buttons" url="../camera/camera"><button type="primary">打开自定义相机</button></navigator>
+		<!-- <view style="height: 20rpx;"></view>
+		<navigator class="buttons" url="../camera/portrait/portrait"><button type="primary">打开人像采集相机</button></navigator> -->
+		<view style="height: 60rpx;"></view>
+		<navigator class="buttons" url="../camera/idcard/idcard?dotype=face"><button type="primary">打开身份证人像面采集相机</button></navigator>
+		<view style="height: 20rpx;"></view>
+		<navigator class="buttons" url="../camera/idcard/idcard?dotype=badge"><button type="primary">打开身份证国徽面采集相机</button></navigator>
+		<view style="height: 60rpx;"></view>
+		<navigator class="buttons" url="../camera/idphoto/idphoto"><button type="primary">打开证件照采集相机</button></navigator>
+		<view style="height: 80rpx;"></view>
+		<image  class="preview" :src="imagesrc" :style="{ width: windowWidth, height: windowHeight }"></image>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			windowWidth:'',
+			windowHeight:'',
+			imagesrc: null
+		};
+	},
+	onLoad() {
+		this.init();
+	},
+	methods: {
+		
+		//设置图片
+		setImage(e) {
+			//显示在页面
+			//this.imagesrc = e.path;
+			
+			//保存到相册
+			uni.saveImageToPhotosAlbum({
+				filePath: e.path,
+				success: () => {
+					uni.showToast({
+						title: '已保存至相册',
+						duration: 2000
+					});
+				}
+			});
+			
+		},
+		
+		//初始化
+		init(){
+			let _this = this;
+			uni.getSystemInfo({
+				success: function(res) {
+					_this.windowWidth = res.windowWidth;
+					_this.windowHeight = res.windowHeight;
+				}
+			});
+		}
+		
+	}
+};
+</script>
+
+<style lang="scss">
+.page {
+	width: 750rpx; 
+	justify-content: center;
+	align-items: center;
+	
+	
+	.buttons {
+		width: 600rpx;
+	}
+}
+
+
+</style>
